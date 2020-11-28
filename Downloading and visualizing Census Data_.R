@@ -15,7 +15,7 @@ library(viridis)
 library(viridisLite)
 
 options(tigris_use_cache = TRUE)
-tigris_cache_dir("C:\\Users\\jacob\\Dropbox (UFL)\\Jacob Box\\Data\\Census Data") 
+tigris_cache_dir("C:\\Users\\jacob\\Desktop\\Odum_Workshop_R_Census") 
 
 ### We need an API key to access the Census Data from census.gov 
 #To obtain your Census API key: http://api.census.gov/data/key_signup.html 
