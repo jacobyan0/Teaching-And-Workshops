@@ -1,3 +1,17 @@
+#######################################################################################
+################# Prerequisit: Basic concepts in U.S. Census Data #####################
+#######################################################################################
+
+## Key concepts:
+#  Geography, subject-table-variable
+#  Year (decennial vs 1-year, 3-year, 5-five ACS)
+
+# Resource: Odum's "Introduction to Census Concepts" workshop
+
+#######################################################################################
+#################               The workship begins here          #####################
+#######################################################################################
+
 #### Make sure that you have installed the packages needed here
 list.of.packages <- c("tidyverse", "sf","tigris","tidycensus","mapview","viridis","viridisLite")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -6,16 +20,13 @@ if(length(new.packages)) install.packages(new.packages)
 ### Clear workspace
 rm(list = ls())
 
+library(tidycensus)
 library(tidyverse)
 library(sf)
 library(tigris)
-library(tidycensus)
 library(mapview)
 library(viridis)
 library(viridisLite)
-
-options(tigris_use_cache = TRUE)
-tigris_cache_dir("C:\\Users\\jacob\\Desktop\\Odum_Workshop_R_Census") 
 
 ### We need an API key to access the Census Data from census.gov 
 #To obtain your Census API key: http://api.census.gov/data/key_signup.html 
@@ -27,9 +38,8 @@ census_api_key<-"94a6c385b3259b65826e0213b375e8d779332b52"
 # get_decennial(): access to 1990, 2000, and 2010 decennial US Census
 # get_acs(): Amercian Communicty Survey
 
-#######################################################################################
-#######    The load_variable function can help you search the data code    ############
-#######################################################################################
+
+###  The load_variable function can help you search the data code   
 ACSvariablelist <- load_variables(year=2018,dataset = "acs1",cache = TRUE)
 View(ACSvariablelist)
 
@@ -89,10 +99,9 @@ NC_County_MedHHInc %>%
 ###########################   Making maps  ####################################
 ###############################################################################
 
-#1. Make a map of median household income in 
-
-### We need to download data with "geometry" information
-NC_County_MedHHInc <- get_acs(geography = "county", year=2018, state = "FL", 
+### 1. Make a map of median household income in 
+ # We need to download data with "geometry" information
+NC_County_MedHHInc <- get_acs(geography = "county", year=2018, state = "NC", 
                               variables = "B19013_001", geometry = TRUE,
                               survey="acs5",key = census_api_key,cache_table = TRUE)
 View(NC_County_MedHHInc)
@@ -107,7 +116,7 @@ NC_County_MedHHInc %>%
   scale_fill_viridis(option = "viridis", direction = -1) + 
   scale_color_viridis(option = "viridis", direction = -1)
 
-# 2. Map the 2010 racial compositions in tracts within Orange County
+### 2. Map the 2010 racial compositions in tracts within Wake County
 #load_variables(year=2010,dataset = "sf1",cache = TRUE)
 racevars <- c(White = "P005003", 
               Black = "P005004", 
@@ -123,12 +132,13 @@ Wake_PopulationByRace %>%
   facet_wrap(~variable) +                                 # create faceted plots by race 
   geom_sf(color = "white", size = 0.1) +
   #coord_sf(crs = 26915) + 
-  scale_fill_viridis(direction = -1) #+
+  scale_fill_viridis(direction = -1) +
+  theme(axis.text.x=element_text(angle=90,vjust =1))
 
-#3. Interactive mapping
+### 3. Interactive mapping
 mapview(NC_County_MedHHInc, zcol = "estimate", legend = TRUE)
 
-# 4. Making many interactive maps with one line of code
+### 4. Making many interactive maps with one line of code
 WA_HousingVar <- read.csv(file="C:/Users/jacob/Desktop/Odum_Workshop_R_Census/HousingExample.csv",header = TRUE)
 View(WA_HousingVar)
 
