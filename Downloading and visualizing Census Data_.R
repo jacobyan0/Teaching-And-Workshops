@@ -44,6 +44,7 @@ census_api_key<-"94a6c385b3259b65826e0213b375e8d779332b52"
 ACSvariablelist <- load_variables(year=2018,dataset = "acs1",cache = TRUE)
 View(ACSvariablelist)
 
+### Change path to your local computer's folder directory
 write.csv(ACSvariablelist,file="C:\\Users\\jacob\\Desktop\\Odum_Workshop_R_Census\\ACSVarList.csv",
           row.names = FALSE)
 
@@ -142,6 +143,7 @@ Wake_PopulationByRace %>%
 mapview(NC_County_MedHHInc, zcol = "estimate", legend = TRUE)
 
 ### 4. Making many interactive maps with one line of code
+# Change path to your local computer's folder directory
 WA_HousingVar <- read.csv(file="C:/Users/jacob/Desktop/Odum_Workshop_R_Census/HousingExample.csv",header = TRUE)
 View(WA_HousingVar)
 
