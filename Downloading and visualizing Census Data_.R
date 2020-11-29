@@ -20,6 +20,7 @@ if(length(new.packages)) install.packages(new.packages)
 ### Clear workspace
 rm(list = ls())
 
+# Load all required libraries
 library(tidycensus)
 library(tidyverse)
 library(sf)
@@ -32,36 +33,31 @@ library(viridisLite)
 #To obtain your Census API key: http://api.census.gov/data/key_signup.html 
 #Insert your key to the current environment
 
-census_api_key<-"...Fill in Key"
+census_api_key<-"94a6c385b3259b65826e0213b375e8d779332b52"
 
-### Two main functions:
+### Two main functions to get Census data:
 # get_decennial(): access to 1990, 2000, and 2010 decennial US Census
 # get_acs(): Amercian Communicty Survey
-
+## Key parameters: geography, variable, year, state, county, survey, key
 
 ###  The load_variable function can help you search the data code   
 ACSvariablelist <- load_variables(year=2018,dataset = "acs1",cache = TRUE)
 View(ACSvariablelist)
 
-#write.csv(variablelist,file="C:\\Users\\jacob\\Desktop\\Odum_Workshop_R_Census\\ACSVarList.csv",
-#          row.names = FALSE)
+write.csv(ACSvariablelist,file="C:\\Users\\jacob\\Desktop\\Odum_Workshop_R_Census\\ACSVarList.csv",
+          row.names = FALSE)
 
-### Get 2014-2018 median household income for Florida counties
-## Key parameters: geography, variable, year, state, county, survey, key
+### Get 2014-2018 median household income for North Carolina counties
 # B19013_001 is the variable for median housheold income
 NC_County_MedHHInc <- get_acs(geography = "county", year=2018, state = "NC", 
                               variables = "B19013_001",
+                              # use variables=c("B01001_001","B01001_002") to get multiple variables
                               survey="acs5",key = census_api_key,cache_table = TRUE)
 View(NC_County_MedHHInc)
 
-#NC_County_MedHHInc_table <- get_acs(geography = "county", year=2018, state = "NC", 
-#                              table="B19013",#variables = "B19013_001"
-#                              survey="acs5",key = census_api_key,cache_table = TRUE)
-#View(NC_County_MedHHInc_table)
-
-
+### Get the number of males in each North Carolina county
 #NC_County_SexAge <- get_acs(geography = "county", year=2018, state = "NC", 
-#                              variables = "B01001_001",
+#                              variables = "B01001_002",
 #                              survey="acs5",key = census_api_key,cache_table = TRUE)
 #View(NC_County_SexAge)
 
@@ -69,6 +65,13 @@ View(NC_County_MedHHInc)
 #                                    table="B01001",
 #                                    survey="acs5",key = census_api_key,cache_table = TRUE)
 #View(NC_County_SexAge_table)
+
+#########################################################################################
+#################################     Exercise     ######################################
+#########################################################################################
+
+# Get the number of housing units in each Census Tract in North Carolina from ACS 2013-2017 
+# 5-year estimates [Hint: specify    geography="tract"]
 
 #########################################################################################
 #######                             Making graphs                            ############
