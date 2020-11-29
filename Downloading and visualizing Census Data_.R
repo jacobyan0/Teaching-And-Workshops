@@ -32,7 +32,7 @@ library(viridisLite)
 #To obtain your Census API key: http://api.census.gov/data/key_signup.html 
 #Insert your key to the current environment
 
-census_api_key<-"94a6c385b3259b65826e0213b375e8d779332b52"
+census_api_key<-"...Fill in Key"
 
 ### Two main functions:
 # get_decennial(): access to 1990, 2000, and 2010 decennial US Census
